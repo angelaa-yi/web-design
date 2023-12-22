@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HTML Canvas and Web APIs</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      canvas {background-color: lightgray;} /* change or remove this color */
+    </style>
+  </head>
+
+  <body>
+    <div id="frame">
+      <canvas id="c1" width="600" height="400"></canvas>
+      <canvas id="c2" width="600" height="400"><p></p></canvas>
+    </div>
+
+    <script>
+      function getLocation(){
+        if(navigator.geolocation){
+          document.querySelector('p').textContent = 'Attempting to Access...';
+          navigator.geolocation.getCurrentPosition(showPosition);
+        }
+        else{
+          document.querySelector('p').textContent='Unable to determine.';
+        }
+      }
+
+      let lat;
+      let long;
+
+      function showPosition(position){
+        lat=position.coords.latitude;
+        long = position.coords.longitude;
+        console.log(`Latitude: ${lat}`);
+        console.log(`Longitude: ${long}`);
+
+        // call our weather data function with those coordinates
+        accessData(lat,long);
+      }
+
+      const canvas = document.querySelector('canvas');
+      const canvas2 = document.querySelectorAll('canvas')[1];
+      const context=canvas.getContext('2d');
+      const context2=canvas2.getContext('2d');
+      const img = new Image();
+      const img2=new Image();
+
+      img.src='images/winter.jpeg';
+      img2.src='images/winter.jpeg';
+
+      img.onload = function() {
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+
+      img2.onload = function() {
+        context2.drawImage(img2, 0, 0, canvas2.width, canvas2.height);
+      }
+
+      setTimeout(function(){
+        accessData = async() => {
+          let url= `https://api.tomorrow.io/v4/timelines?location=${lat},${long}&fields=temperature&timesteps=1h&units=metric&apikey=3pfQgJvkxbqxxr7KgespKCaB9iCkLhlR`
+
+          // get the resonse ready
+          let response = await fetch(url);
+
+          if (response.ok){ // if HTTP status is 200-290 like error codes
+            let json = await response.json();
+            console.log(json);
+            weatherData(json);
+          }
+          else{
+            console.log(`Error: ${response.status}`);
+          }
+          
+        }
+        
+        function weatherData(response) {
+          // access value with dot syntax
+          let temperature=response.data.temperature; // current temperature
+          if(temperature<32){
+            img2.src='images/winter.jpeg';
+          }
+          else if (temperature>=32 && temperature<50){
+            img2.src='images/fall.jpeg';
+          }
+          else if (temperature>=50 && temperature<70){
+            img2.src='images/spring.jpeg';
+          }
+          else{
+            img2.src='images/summer.jpeg';
+          }
+
+        }
+
+        img2.onload = function() {
+          context2.drawImage(img2, 0, 0, canvas2.width, canvas2.height);
+        }
+      },3000);
+
+
+      window.addEventListener('load', getLocation);
+
+    </script>
+  </body>
+</html>

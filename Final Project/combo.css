@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+
+a{
+	text-decoration: none;
+}
+
+video {
+	display: none;
+}
+
+.guitarNeck{
+	width:690px;
+	height:100px;
+	background-color: black;
+	position: absolute;
+	top: 350px;
+	left: 750px;
+}
+
+#container{
+	display: flex;
+	width:1400px;
+}
+
+#circle{
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	background-color: black;
+	position: absolute;
+	top: 300px;
+	left: 300px;
+}
+
+.guitarLines{
+	position: relative;
+	height:0.75px;
+	width:1140px;
+	background-color:white;
+	left: -450px;
+}
+
+.guitarLines:nth-child(1){
+	top:14px;
+	left:-444px;
+}
+
+.guitarLines:nth-child(2){
+	top:28px;
+	left:-448px;
+}
+
+.guitarLines:nth-child(3){
+	top:42px;
+}
+
+.guitarLines:nth-child(4){
+	top:56px;
+}
+
+.guitarLines:nth-child(5){
+	top:70px;
+	left:-448px;
+}
+
+.guitarLines:nth-child(6){
+	top:84px;
+	left:-443px;
+}
+
+.guitarLines:hover{
+	animation: cute 0.1s ease-in-out infinite;
+}
+
+@keyframes cute {
+	0% {
+		transform:rotate(0deg);
+	}
+	20% {
+		transform:rotate(1deg);
+	}
+	40% {
+		transform:rotate(0deg);
+	}
+	60% {
+		transform:rotate(-1deg);
+	}
+	80% {
+		transform:rotate(0deg);
+	}
+	100% {
+		transform:rotate(1deg);
+	}
+}
+
+.keyboard{
+	background-color: white;
+	border-radius: 10px;
+	height:300px;
+	width:75px;
+	border: 3px solid black;
+	z-index:3;
+	position: absolute;
+	mix-blend-mode: multiply;
+}
+
+.keyboard:nth-child(1) {
+	top:500px;
+	left:10px;
+}
+
+.keyboard:nth-child(2) {
+	top:500px;
+	left:88px;
+}
+
+.keyboard:nth-child(3) {
+	top:500px;
+	left:166px;
+}
+
+.keyboard:nth-child(4) {
+	top:500px;
+	left:244px;
+}
+
+.keyboard:nth-child(5) {
+	top:500px;
+	left:322px;
+}
+
+.keyboard:nth-child(6) {
+	top:500px;
+	left:400px;
+}
+
+.keyboard:nth-child(7) {
+	top:500px;
+	left:478px;
+}
+
+.keyboard:nth-child(8) {
+	top:500px;
+	left:556px;
+}
+
+.keyboard:nth-child(9) {
+	top:500px;
+	left:634px;
+}
+
+.keyboard:nth-child(10) {
+	top:500px;
+	left:712px;
+}
+
+.keyboard:nth-child(11) {
+	top:500px;
+	left:790px;
+}
+
+.keyboard:nth-child(12) {
+	top:500px;
+	left:868px;
+}
+
+.keyboard:nth-child(13) {
+	top:500px;
+	left:946px;
+}
+
+.keyboard:nth-child(14) {
+	top:500px;
+	left:1024px;
+}
+
+.keyboard:nth-child(15) {
+	top:500px;
+	left:1102px;
+}
+
+.keyboard:nth-child(16) {
+	top:500px;
+	left:1180px;
+}
+
+.keyboard:nth-child(17) {
+	top:500px;
+	left:1258px;
+}
+
+.keyboard:nth-child(18) {
+	top:500px;
+	left:1336px;
+}
+
+
+.keyboardFlat{
+	background-color:black;
+	border-radius: 5px;
+	height:200px;
+	width:50px;
+	z-index:2;
+	position: absolute;
+}
+
+.keyboardFlat:nth-child(1){
+	top: 500px;
+	left: 64px;
+}
+
+.keyboardFlat:nth-child(2){
+	top: 500px;
+	left: 142px;
+}
+
+.keyboardFlat:nth-child(3){
+	top: 500px;
+	left: 299px;
+}
+
+.keyboardFlat:nth-child(4){
+	top: 500px;
+	left: 377px;
+}
+
+.keyboardFlat:nth-child(5){
+	top: 500px;
+	left: 455px;
+}
+
+.keyboardFlat:nth-child(6){
+	top: 500px;
+	left: 611px;
+}
+
+.keyboardFlat:nth-child(7){
+	top: 500px;
+	left: 689px;
+}
+
+.keyboardFlat:nth-child(8){
+	top: 500px;
+	left: 844px;
+}
+
+.keyboardFlat:nth-child(9){
+	top: 500px;
+	left: 922px;
+}
+
+.keyboardFlat:nth-child(10){
+	top: 500px;
+	left: 1000px;
+}
+
+.keyboardFlat:nth-child(11){
+	top: 500px;
+	left: 1155px;
+}
+
+.keyboardFlat:nth-child(12){
+	top: 500px;
+	left: 1233px;
+}
+
+.keyboardFlat:nth-child(13){
+	top: 500px;
+	left: 1389px;
+	width:25px;
+	border-bottom-right-radius: 0px;
+}
+
+#canvas2 {
+	position: absolute;
+	z-index:-1;
+	left:0;
+	top:0;
+}
+
+#video2 {
+	display: none;
+}
+
+#right{
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+p{
+	font-family:fantasy;
+	color: white;
+}
+
+#play{
+	background-color: lightblue;
+}
+
+#retry{
+	background-color:red;
+	color: white;
+}
+
+#nextRound{
+	background-color: pink;
+}
+
+.hidden{
+	display: none;
+}

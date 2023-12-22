@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+.keyboard{
+	background-color: white;
+	border-radius: 10px;
+	height:300px;
+	width:75px;
+	border: 3px solid black;
+	z-index:1;
+	position: absolute;
+}
+
+.keyboard:nth-child(1) {
+	top:400px;
+	left:10px;
+}
+
+.keyboard:nth-child(2) {
+	top:400px;
+	left:88px;
+}
+
+.keyboard:nth-child(3) {
+	top:400px;
+	left:166px;
+}
+
+.keyboard:nth-child(4) {
+	top:400px;
+	left:244px;
+}
+
+.keyboard:nth-child(5) {
+	top:400px;
+	left:322px;
+}
+
+.keyboard:nth-child(6) {
+	top:400px;
+	left:400px;
+}
+
+.keyboard:nth-child(7) {
+	top:400px;
+	left:478px;
+}
+
+.keyboard:nth-child(8) {
+	top:400px;
+	left:556px;
+}
+
+.keyboard:nth-child(9) {
+	top:400px;
+	left:634px;
+}
+
+.keyboard:nth-child(10) {
+	top:400px;
+	left:712px;
+}
+
+.keyboard:nth-child(11) {
+	top:400px;
+	left:790px;
+}
+
+.keyboard:nth-child(12) {
+	top:400px;
+	left:868px;
+}
+
+.keyboard:nth-child(13) {
+	top:400px;
+	left:946px;
+}
+
+.keyboard:nth-child(14) {
+	top:400px;
+	left:1024px;
+}
+
+.keyboard:nth-child(15) {
+	top:400px;
+	left:1102px;
+}
+
+.keyboard:nth-child(16) {
+	top:400px;
+	left:1180px;
+}
+
+.keyboard:nth-child(17) {
+	top:400px;
+	left:1258px;
+}
+
+.keyboard:nth-child(18) {
+	top:400px;
+	left:1336px;
+}
+
+
+.keyboardFlat{
+	background-color:black;
+	border-radius: 5px;
+	height:200px;
+	width:50px;
+	z-index:2;
+	position: absolute;
+}
+
+.keyboardFlat:nth-child(1){
+	top: 400px;
+	left: 64px;
+}
+
+.keyboardFlat:nth-child(2){
+	top: 400px;
+	left: 142px;
+}
+
+.keyboardFlat:nth-child(3){
+	top: 400px;
+	left: 299px;
+}
+
+.keyboardFlat:nth-child(4){
+	top: 400px;
+	left: 377px;
+}
+
+.keyboardFlat:nth-child(5){
+	top: 400px;
+	left: 455px;
+}
+
+.keyboardFlat:nth-child(6){
+	top: 400px;
+	left: 611px;
+}
+
+.keyboardFlat:nth-child(7){
+	top: 400px;
+	left: 689px;
+}
+
+.keyboardFlat:nth-child(8){
+	top: 400px;
+	left: 844px;
+}
+
+.keyboardFlat:nth-child(9){
+	top: 400px;
+	left: 922px;
+}
+
+.keyboardFlat:nth-child(10){
+	top: 400px;
+	left: 1000px;
+}
+
+.keyboardFlat:nth-child(11){
+	top: 400px;
+	left: 1155px;
+}
+
+.keyboardFlat:nth-child(12){
+	top: 400px;
+	left: 1233px;
+}
+
+.keyboardFlat:nth-child(13){
+	top: 400px;
+	left: 1389px;
+	width:25px;
+	border-bottom-right-radius: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(149, 106, 160);
+}
+
+p{
+	text-align: center;
+	font-family:'Climate Crisis', cursive;
+	font-size: 50px;
+}

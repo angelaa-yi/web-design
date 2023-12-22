@@ -1,0 +1,40 @@
+img{
+	width:10%;
+	height:auto;
+	position: absolute;
+}
+
+.musicPic:nth-child(1){
+	top:10px;
+	left:10px;
+}
+
+.musicPic:nth-child(2){
+	top:10px;
+	left:150px;
+}
+
+.musicPic:nth-child(3){
+	top:10px;
+	left:300px;
+}
+
+.musicNotesPic:nth-child(1){
+	top:150px;
+	left:10px;
+}
+
+.musicNotesPic:nth-child(2){
+	top:150px;
+	left:150px;
+}
+
+.musicNotesPic:nth-child(3){
+	top:150px;
+	left:300px;
+}
+
+#frame{
+	height:100vh;
+	width:auto;
+}

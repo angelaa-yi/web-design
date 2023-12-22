@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+
+a{
+	text-decoration: none;
+}
+
+video {
+	display: none;
+}
+
+.guitarNeck{
+	width:690px;
+	height:100px;
+	background-color: black;
+	position: absolute;
+	top: 350px;
+	left: 750px;
+}
+
+#container{
+	display: flex;
+	width:1400px;
+}
+
+#circle{
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	background-color: black;
+	position: absolute;
+	top: 300px;
+	left: 300px;
+}
+
+.guitarLines{
+	position: relative;
+	height:0.75px;
+	width:1140px;
+	background-color:white;
+	left: -450px;
+}
+
+.guitarLines:nth-child(1){
+	top:14px;
+	left:-444px;
+}
+
+.guitarLines:nth-child(2){
+	top:28px;
+	left:-448px;
+}
+
+.guitarLines:nth-child(3){
+	top:42px;
+}
+
+.guitarLines:nth-child(4){
+	top:56px;
+}
+
+.guitarLines:nth-child(5){
+	top:70px;
+	left:-448px;
+}
+
+.guitarLines:nth-child(6){
+	top:84px;
+	left:-443px;
+}
+
+.guitarLines:hover{
+	animation: cute 0.1s ease-in-out infinite;
+}
+
+@keyframes cute{
+	0% {
+		transform:rotate(0deg);
+	}
+	20% {
+		transform:rotate(1deg);
+	}
+	40% {
+		transform:rotate(0deg);
+	}
+	60% {
+		transform:rotate(-1deg);
+	}
+	80% {
+		transform:rotate(0deg);
+	}
+	100% {
+		transform:rotate(1deg);
+	}
+}
+
+body{
+	background-color:lightblue;
+}
+

@@ -1,0 +1,56 @@
+@media (prefers-color-scheme: light) {
+	body {
+		background-image: url("images/light background.jpeg");
+		height:1000px;
+		background-position:center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		z-index:1;
+	}
+	.htmlCssDrawing, .SVG, .cssAnimation, .javascript, .htmlCanvas, .webAPI, .htmlCanvasAnimation, .finalProject {
+		background-color: rgba(50,12,6,.5);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-image: url("images/dark background.jpeg");
+		height:1000px;
+		background-position:center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		z-index:1;
+		color: white;
+	}
+	.htmlCssDrawing, .SVG, .cssAnimation, .javascript, .htmlCanvas, .webAPI, .htmlCanvasAnimation, .finalProject {
+		background-color:rgba(251,247,180,.5);
+	}
+}
+
+.htmlCssDrawing, .SVG, .cssAnimation, .javascript, .htmlCanvas, .webAPI, .htmlCanvasAnimation, .finalProject {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index:2;
+}
+
+.wrapper {
+	display: grid; /* this applies only to direct child elements */
+	grid-template-columns: 1fr 1fr 1fr; /* three columns */
+	grid-auto-rows: minmax(100px,auto);
+	column-gap: 10px;
+	row-gap: 1em;
+}
+
+#customFont{
+	text-align: center;
+	line-height: 100px;
+	vertical-align: middle;
+	font-size:40px;
+	font-family: Lucida Handwriting, Brush Script MT, Cursive;
+}
+
+a{
+	text-decoration:none;
+	color: inherit;
+}

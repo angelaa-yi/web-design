@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Final Project</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="yayParent">
+		<div class="keyboard"><a href="guitar.html" id = "yay" class="hidden"></a></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+		<div class="keyboard"></div>
+	</div>
+
+	<div class="cuteParent">
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+		<div class="keyboardFlat"></div>
+	</div>
+
+	<video muted autoplay loop playsinline src="videos/sunset.mp4"></video>
+	<div id="canvasContainer">
+		<canvas id="canvas1" width="1493" height="904"></canvas>
+		<div id="right">
+			<button type="button" id ="play">Play song</button>
+			<button type="button" id="retry" class="hidden">Retry the song</button>
+			<button type="button" id="nextRound" class="hidden"><a href="guitar.html">Next round!</a></button>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="animation.js"></script>
+
+	<script>
+		const video=document.querySelector('video');
+		const canvas = document.querySelector('canvas');
+		const context = canvas.getContext('2d');
+
+		let width;
+		let height;
+		let pxScale = window.devicePixelRatio;
+		const pixelColors = [];
+
+		function setup() {
+	        video.play();
+
+	        width = canvas.width;
+	        height = canvas.height;
+
+	        canvas.style.width = width + 'px';
+	        canvas.style.height = height + 'px';
+
+	        canvas.width = width * pxScale;
+	        canvas.height = height * pxScale;
+
+	        context.scale(pxScale, pxScale);
+	    }
+
+	    function draw() {
+	    	context.drawImage(video,0,0,1493,904);
+	        requestAnimationFrame(draw);
+	    }
+
+	    function sampleColors() {
+			context.drawImage(video,0,0,1493,904);
+
+			// sample image while accounting for pixel density
+			let imageData = context.getImageData(0,0,1493 * pxScale, 904  * pxScale);
+			let data = imageData.data;
+
+			// organize all colors in an array of RGBA values
+			for (let channel = 0; channel < data.length; channel += 4) {
+				let color = 'rgba(' + data[channel] + ',' + data[channel + 1] + ',' + data[channel + 2] + ',' + data[channel + 3] + ')';
+				pixelColors.push(color);
+			}
+
+			// store and paint canvas with one of the sampled colors
+			let backgroundColor = pixelColors[parseInt(Math.random() * pixelColors.length)];
+
+			for(let i =0;i<keyboardFlats.length; i++){
+				keyboardFlats[i].style.backgroundColor=backgroundColor;
+			}
+
+		}
+
+	    window.addEventListener('load', () => {
+	      	setup();
+	      	sampleColors();
+	        draw();
+	    });
+	</script>
+
+</body>
+</html>

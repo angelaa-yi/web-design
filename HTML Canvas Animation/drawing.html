@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HTML and CSS Drawing</title>
+	<link rel="stylesheet" href="htmlCssStylesheet.css">
+</head>
+<body>
+	<div id="container">
+		<div id="firstLayer"></div>
+		<div class="wrapper">
+			<div id="secondLayer"></div>
+		</div>
+		<div id="thirdLayer"></div>
+		<audio controls autoplay loop >
+			<source src="media/rain.mp3" type="audio/mpeg">
+		</audio>
+	</div>
+	
+	<canvas width="1280" height="720"></canvas>
+
+	<script>
+		const canvas = document.querySelector('canvas');
+		const context = canvas.getContext('2d');
+
+		let width;
+		let height;
+
+		// set the number of canvas pixels, scaled for screen resolution
+		let pxScale = window.devicePixelRatio;
+
+		function setup() {
+			// fixed canvas size
+			width = canvas.width;
+			height = canvas.height;
+
+			// set the CSS display size
+			canvas.style.width = width + 'px';
+			canvas.style.height = height + 'px';
+
+			canvas.width = width * pxScale;
+			canvas.height = height * pxScale;
+
+			// normalize the coordinate system
+			context.scale(pxScale, pxScale);
+		}
+
+		let startTime;
+		let duration=1500;
+		// let startTime2;
+		// let duration2=1500;
+
+		function draw(currentTime) {
+			if(!startTime){
+				startTime=currentTime;
+			}
+
+			let timePassed=currentTime-startTime;
+			if(timePassed<duration){
+				// clear canvas
+				// context.clearRect(0, 0, width, height);
+
+				context.fillStyle='rgba(235,219,253,1)';
+				context.fillRect(0, 0, width, height);
+				// startTime2=null;				
+			}
+			else if (timePassed<3000){
+				context.clearRect(0, 0, width, height);
+				// if(!startTime2){
+				// 	startTime2=currentTime;
+				// }
+			}
+			else{
+				startTime=null;
+				// startTime2=null;
+			}
+			
+			// recursive function call
+			requestAnimationFrame(draw);
+			
+		}
+
+		window.addEventListener('load', function(event) {
+	        setup();
+	        // draw();
+	        window.requestAnimationFrame(draw);
+	    });
+	</script>
+</body>
+</html>

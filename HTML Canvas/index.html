@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTML Canvas</title>
+  <style>
+    img {
+      display: none;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      width: auto;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    </style>
+</head>
+<body>
+  <img src="picture.jpeg">
+  <canvas></canvas>
+
+
+  <script>
+    const canvas = document.querySelector('canvas');
+    const context=canvas.getContext('2d');
+
+    let width;
+    let height;
+
+    // set the number of canvas, scaled for screen resolution
+    let pxScale = window.devicePixelRatio;
+    const image = document.querySelector('img');
+
+    function setup() {
+      // full canvas size
+      width = window.innerWidth;
+      height = window.innerHeight;
+
+      // set the CSS display size
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+
+      canvas.width = width * pxScale;
+      canvas.height = height * pxScale;
+
+      // normalize the coordinate system
+      context.scale(pxScale, pxScale);
+    }
+
+    function draw() {
+      context.drawImage(image, 0, 0, 40, 30);
+
+      // sample image while accounting for pixel density
+      let imageData = context.getImageData(0, 0, 40 * pxScale, 30  * pxScale);
+      let data = imageData.data;
+
+      context.clearRect(0, 0, width, height);  // clear canvas
+
+      let pixelColors = [];
+
+      // organize all colors in an array of RGBA values
+      for (let channel = 0; channel < data.length; channel += 4) {
+        let color = 'rgba(' + data[channel] + ',' + data[channel + 1] + ',' + data[channel + 2] + ',' + data[channel + 3] + ')';
+        pixelColors.push(color);
+      }
+
+      context.fillStyle=pixelColors[parseInt(Math.random()*pixelColors.length)];
+      context.fillRect(0,0,width,height);
+
+      for(let y=0; y<imageData.height; y+=4){
+        for(let x =0; x< imageData.width; x+=4){
+          context.fillStyle=pixelColors[parseInt(Math.random()*pixelColors.length)];
+          context.save();
+          context.translate(10,10);
+          context.beginPath();
+          context.arc(x*40/pxScale, y*30/pxScale, 15, 0, Math.PI*2);
+          context.fill();
+          context.restore();
+        }
+      }
+
+      //bezier
+      let start = {
+        x:width/2, 
+        y:height/2+height/5
+      };
+
+      let handle1 = {
+        x: width/2+width/4,
+        y: height/2
+      };
+
+      let handle2 = {
+        x: width/2+width/16,
+        y: height/2+height/3
+      }
+
+      let end = {
+        x: width/2,
+        y: height/2+height/2
+      };
+
+      let handle3 = {
+        x: width/2-width/16,
+        y: height/2+height/3
+      };
+
+      let handle4 = {
+        x: width/2-width/4,
+        y: height/2
+      }
+
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      context.bezierCurveTo(handle1.x, handle1.y, handle2.x, handle2.y, end.x, end.y);
+      context.bezierCurveTo(handle3.x, handle3.y, handle4.x, handle4.y, start.x, start.y);
+      context.closePath();
+      context.fillStyle=pixelColors[parseInt(Math.random()*pixelColors.length)];
+      context.fill();
+    }
+
+    window.addEventListener('load', () => {
+      setup();
+      draw();
+    });
+
+  </script>
+  
+</body>
+</html>

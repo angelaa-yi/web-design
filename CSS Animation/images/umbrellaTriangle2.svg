@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="umbrellaTriangle2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 151.85 183.7">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #231f20;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="m133.33,183.7c-6.72-7.29-26.8-27.19-60-34.07-36.32-7.53-64.83,5.38-73.33,9.63C50.62,106.17,101.23,53.09,151.85,0c-6.17,61.23-12.35,122.47-18.52,183.7Z"/>
+</svg>
