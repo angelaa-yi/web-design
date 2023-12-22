@@ -1,0 +1,99 @@
+@media only screen and (max-width: 480px){
+	svg.elements{
+		width:200px;
+		height:auto;
+	}
+
+	a{
+		text-decoration: none;
+	}
+
+	#titleName{
+		position: fixed;
+		width:100vw;
+		top:0px;
+		left:0px;
+		right:0px;
+		padding-left:10px;
+	}
+
+	.wrapper {
+		display: grid; /* this applies only to direct child elements */
+		grid-template-columns: 1fr; /* one column*/
+		column-gap: 10px;
+		justify-content: center;
+	}
+
+	h3{
+		text-align: center;
+	}
+
+	#footerPlace{
+		text-align: center;
+		width:100vw;
+		position: fixed;
+		bottom:0px;
+		left:0px;
+		right:0px;
+	}
+
+	#container{
+		margin:10px;
+		width:200px;
+		justify-content: center;
+		display: flex;
+		flex-direction:column;
+		align-items: center;
+	}
+
+	body{
+		background-position:center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		z-index:1;
+	}
+
+	@media (prefers-color-scheme: light) {
+		body {
+			background-image: url("images/light background.jpeg");
+		}
+
+		svg.elements:hover{
+			fill: rgb(239,217,251);
+		}
+
+		#titleName, #footerPlace{
+			background-color:black;
+		}
+
+		h1, h3, p{
+			color: white;
+		}
+
+		#container {
+			background-color: rgba(50,12,6,.5);
+		}
+	}
+
+	@media (prefers-color-scheme: dark) {
+		body {
+			background-image: url("images/dark background.jpeg");
+		}
+
+		svg.elements:hover{
+			fill: rgb(221,248,251);
+		}
+
+		#titleName, #footerPlace{
+			background-color:white;
+		}
+
+		h1, h3, p{
+			color: black;
+		}
+
+		#container {
+			background-color:rgba(251,247,180,.5);
+		}
+	}
+}

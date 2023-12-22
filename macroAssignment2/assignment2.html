@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Assignment 02</title>
+	<style>
+		#container{
+			position: relative;
+			width:800px;
+			height:600px;
+			margin: auto;
+			border:5px solid black;
+		}
+
+		#background{
+			position: absolute;
+			height:100%;
+			width:100%;
+			top:0px;
+			left:0px;
+			z-index:0;
+		}
+
+		#title{
+			position: absolute;
+			top: 20px;
+			left:20px;
+			z-index:1;
+		}
+
+		#infoPanel{
+			position: absolute;
+			min-width:100px;
+			min-height:20px;
+			background-color:rgba(255,255,255,0.75);
+			top:80px;
+			left:20px;
+			z-index:1;
+			padding:10px;
+			border-radius:10px;
+		}
+
+		#body{
+			position:absolute;
+			bottom: 0px;
+			right:200px;
+			z-index:1;
+		}
+
+		#head{
+			position:absolute;
+			bottom: 275px;
+			right:275px;
+			z-index:1;
+		}
+
+		#hat{
+			position:absolute;
+			bottom: 240px;
+			right:225px;
+			z-index:1;
+			max-height:200px;
+			max-width:200px;
+		}
+
+		#number{
+			position: absolute;
+			z-index:2;
+			max-height:20px;
+			max-width:20px;
+			bottom:13px;
+			left: 0px;
+		}
+
+
+	</style>
+</head>
+<body>
+
+	<div id="container">
+
+	<script>
+		// ask the user for a number to use for lucky number
+		let num=0;
+		num=prompt("Choose a positive number greater than or equal to 3: ");
+		isNotaNumber=isNaN(num);
+		while (num<3 || isNotaNumber){
+			num=prompt("Choose a positive number greater than or equal to 3: ");
+			isNotaNumber=isNaN(num);
+		}
+		// random word
+		const words=["Awesome", "Fantastic", "Fabulous", "Superb", "Perfect", "Brilliant", "Coming up Roses"];
+		let i = parseInt(Math.random()*words.length);
+		let word= words[i];
+
+		document.write(`<h1 id="title"> Everything is ${word}!</h1>`);
+
+		// get time
+		let rightNow=new Date();
+		let hour=rightNow.getHours();
+		let minute = rightNow.getMinutes();
+		let newHour=0;
+		let amOrPm = "am";
+
+		// make time pretty
+		if(hour>12){
+			newHour=hour-12;
+			amOrPm="pm";
+		}
+		else{
+			newHour=hour;
+			amOrPm="am";
+		}
+	</script>
+	<div id="infoPanel">
+		<script>
+			//change info thingy to make the night/morning thingy
+			let timeInMinutes=(hour*60)+(minute);
+			let greetingOfDay=" ";
+			if (timeInMinutes>=0 && timeInMinutes<=359){
+				greetingOfDay= "Night";
+			}
+			else if (timeInMinutes>359 && timeInMinutes<=719){
+				greetingOfDay= "Morning";
+			}
+			else if (timeInMinutes>719 && timeInMinutes<=1079){
+				greetingOfDay= "Afternoon";
+			}
+			else if(timeInMinutes>1079) {
+				greetingOfDay= "Evening";
+			}
+
+			if(minute<10){
+				document.write(`<div id="info">The current time is ${newHour}:0${minute} ${amOrPm} - Good ${greetingOfDay}!</div>`);
+			}
+			else{
+				document.write(`<div id="info">The current time is ${newHour}:${minute} ${amOrPm} - Good ${greetingOfDay}!</div>`);
+			}
+
+
+			//lucky number
+			let luckyNumber1=(parseInt(Math.random()*num))+1;
+			let luckyNumber2=(parseInt(Math.random()*num))+1;
+			while (luckyNumber2==luckyNumber1){
+				luckyNumber2=(parseInt(Math.random()*num))+1;
+			}
+			let luckyNumber3=(parseInt(Math.random()*num))+1;
+			while(luckyNumber3==luckyNumber2 || luckyNumber3==luckyNumber1){
+				luckyNumber3=(parseInt(Math.random()*num))+1;
+			}
+
+			//show the lucky number through image
+			/* luckyNumber1String = luckyNumber1.toString();
+			luckyNumber2String = luckyNumber2.toString();
+			luckyNumber3String = luckyNumber3.toString();
+			*/
+			document.write(`<div id ="luckyNum">Your three lucky numbers today are ${luckyNumber1}, ${luckyNumber2}, and ${luckyNumber3}.</div>`);
+
+			/* let leftNum1=0;
+			let leftNum2=40;
+			let leftNum3=80;
+			
+
+			
+
+			for(let i=0; i<luckyNumber1String.length; i++){
+				document.write(`<img id="number" src="numbers/${luckyNumber1String.charAt(i)}.png">`);
+				let numLeft=document.querySelector('#number');
+				numLeft.style.left=leftNum1+'px';
+				leftNum1+=20;
+				leftNum2+=20;
+			}
+
+			document.write(", ");
+			for(let i=0; i<luckyNumber2String.length; i++){
+				document.write(`<img id="number" src="numbers/${luckyNumber2String.charAt(i)}.png" >`);
+				let numLeft=document.querySelector('#number');
+				numLeft.style.left=leftNum2+'px';
+				leftNum2+=20;
+				leftNum3+=20;
+
+			}
+			document.write(", and ")
+			for(let i=0; i<luckyNumber3String.length; i++){
+				document.write(`<img id="number" src="numbers/${luckyNumber3String.charAt(i)}.png">`);
+				let numLeft=document.querySelector('#number');
+				numLeft.style.left=leftNum3+'px';
+				leftNum3+=20;
+			}
+			*/
+			
+		</script>
+	</div>
+
+		<script>
+			// cahnge background thingy
+			document.write(`<img id ="background" src="backgrounds/${greetingOfDay}.png">`);
+
+			//random head
+			headNum=(parseInt(Math.random()*6))+1;
+			document.write(`<img id ="head" src="heads/head${headNum}.png">`);
+
+			//random body
+			bodyNum=(parseInt(Math.random()*6))+1;
+			document.write(`<img id ="body" src="bodies/body${bodyNum}.png">`);
+
+			//random hat
+			hatNum=(parseInt(Math.random()*3))+1;
+			document.write(`<img id ="hat" src="hats/hat${hatNum}.webp">`);
+		</script>
+		
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Macro Assignmnent #3</title>
+	<style>
+		#left{
+			float: left;
+			width: 800px;
+			height: 600px;
+			position: relative;
+			margin-right:20px;
+		}
+		#background{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+		}
+		#grass1{
+			position: absolute;
+			left: 0px;
+			bottom: 0px;
+		}
+		#grass2{
+			position: absolute;
+			left: 275px;
+			bottom: 0px;
+		}
+		#grass3{
+			position: absolute;
+			right: 0px;
+			bottom: 0px;
+		}
+		.grass:hover{
+			background-color: rgba(255,255,0,0.5);
+		}
+
+		#buttons{
+			display: flex;
+		}
+
+		.histogram{
+			max-width:300px;
+			max-height:15px;
+		}
+
+	</style>
+</head>
+
+
+<body>
+
+	<div id="left">
+		<img id="background" src="images/environment_forestbackground.png">
+		<img class="grass" id="grass1" src="images/grass.png">
+		<img class="grass" id="grass2" src="images/grass.png">
+		<img class="grass" id="grass3" src="images/grass.png">
+	</div>
+
+	<div id="right">
+		<h1> Gotta Catch 'em All!</h1>
+		<p>Instructions</p>
+		<h2 id="status">Click a grass</h2>
+		<div id="pokemon_caught_div">Caught: 0</div>
+		<div id="pokeballs_left_div">Pokeballs: 5</div>
+		<div id="buttons">
+			<button id="play_again_button" style="display: none;">Play again!</button>
+			<button id="reset_button">Start over</button>
+		</div>
+
+		<div id="counting">
+		</div>
+
+	</div>
+
+	<br>
+
+	<div id="pokedex" style="display:none">
+		<table>
+			<tr>
+			  <th>Pokemon</th>
+			  <th>Count</th>
+			  <th>Histogram</th>
+			</tr>
+			<tr>
+			  <td>Pikachu</td>
+			  <td>0</td>
+			  <td><div class="histogram1" style="background-color: red; height: 15px; width:0px;">&nbsp;</div></td>
+			</tr>
+			<tr>
+			  <td>Bulbasaur</td>
+			  <td>0</td>
+			  <td><div class="histogram2" style="background-color: yellow; height: 15px; width:0px;">&nbsp;</div></td>
+			</tr>
+			<tr>
+			  <td>Charmander</td>
+			  <td>0</td>
+			  <td><div class="histogram3" style="background-color: lightblue; height: 15px; width:0px;">&nbsp;</div></td>
+			</tr>
+			<tr>
+			  <td>Eevee</td>
+			  <td>0</td>
+			  <td><div class="histogram4" style="background-color: lightgreen; height: 15px; width:0px;">&nbsp;</div></td>
+			</tr>
+			<tr>
+			  <td>Squirtle</td>
+			  <td>0</td>
+			  <td><div class="histogram5" style="background-color: purple; height: 15px; width:0px;">&nbsp;</div></td>
+			</tr>
+		</table>
+	</div>
+
+	<script>
+
+		//set up DOM queries for all the things we plan on using
+		const grass1=document.querySelector(`#grass1`);
+		const grass2=document.querySelector(`#grass2`);
+		const grass3=document.querySelector(`#grass3`);
+		const pokemon_caught_div=document.getElementById(`pokemon_caught_div`);
+		const pokeballs_left_div=document.getElementById(`pokeballs_left_div`);
+		const play_again_button=document.getElementById(`play_again_button`);
+		// possible pokemon
+		const pokemon = ['bulbasaur','charmander','eevee','pikachu','squirtle'];
+		const status=document.querySelector('#status');
+		const pokedex=document.querySelector('#pokedex');
+
+		const histogram1=document.querySelector('.histogram1');
+		const histogram2=document.querySelector('.histogram2');
+		const histogram3=document.querySelector('.histogram3');
+		const histogram4=document.querySelector('.histogram4');
+		const histogram5=document.querySelector('.histogram5');
+
+		let pokeballsRemaining=5;
+		let pokemonsCaught=0;
+		let chance;
+
+		// for the extra features
+		let bulbasaurCaught=0;
+		let nothingFound=0;
+		// should i add two for each time pokeballs are found or just one
+		let pokeballsFound=0;
+		let pikachuCaught=0;
+		let charmanderCaught=0;
+		let eeveeCaught=0;
+		let squirtleCaught=0;
+
+		
+		//grass 1-handle user clicks
+		grass1.onclick=function(){
+			// cjeck to see if the play again button is currently visible
+			if (chance==undefined){
+				chance=parseInt(Math.random()*3);
+			}
+			
+			//if so, don't let this grass compute a new graphic and update the state 
+			pokeballsRemaining-=1;
+			//generate a chance variable
+			
+			if (chance==0){
+				grass1.src="images/pokeballs.png";
+				pokeballsRemaining+=2;
+				status.innerHTML=`You found two Pokeballs!`;
+				pokeballsFound++;
+			}
+			else if(chance==1){
+				grass1.src=``;
+				status.innerHTML=`Nothing here!`;
+				nothingFound++;
+			}
+			else{
+				// choose a random pokemon picture
+				let pokemonNum=parseInt(Math.random()*5);
+				grass1.src= `images/${pokemon[pokemonNum]}.png`;
+				pokemonsCaught+=1;
+				
+				if(pokemonNum==0){
+					bulbasaurCaught++;
+					pokedex.firstElementChild.firstElementChild.children[2].children[1].innerHTML=bulbasaurCaught;
+					histogram2.style.width=parseInt(histogram2.style.width)+10+'px';
+				}
+				else if(pokemonNum==1){
+					charmanderCaught++;
+					pokedex.firstElementChild.firstElementChild.children[3].children[1].innerHTML=charmanderCaught;
+					histogram3.style.width=parseInt(histogram3.style.width)+10+'px';
+				}
+				else if(pokemonNum==2){
+					eeveeCaught++;
+					pokedex.firstElementChild.firstElementChild.children[4].children[1].innerHTML=eeveeCaught;
+					histogram4.style.width=parseInt(histogram4.style.width)+10+'px';
+				}
+				else if(pokemonNum==3){
+					pikachuCaught++;
+					pokedex.firstElementChild.firstElementChild.children[1].children[1].innerHTML=pikachuCaught;
+					histogram1.style.width=parseInt(histogram1.style.width)+10+'px';
+				}
+				else if(pokemonNum==4){
+					squirtleCaught++;
+					pokedex.firstElementChild.firstElementChild.children[5].children[1].innerHTML=squirtleCaught;
+					histogram5.style.width=parseInt(histogram5.style.width)+10+'px';
+				}
+
+				if(bulbasaurCaught>=1 && charmanderCaught>=1 && eeveeCaught>=1 && pikachuCaught>=1 && squirtleCaught>=1){
+					status.innerHTML='Congrats! You caught each pokemon at least once!';
+				}
+				else{
+					status.innerHTML=`You caught a ${pokemon[pokemonNum]}`;
+				}
+
+			}
+
+			//round is over. update the pokeballs left indicator
+			pokeballs_left_div.innerHTML=`Pokeballs: ` + pokeballsRemaining;
+			pokemon_caught_div.innerHTML=`Caught: ` + pokemonsCaught;
+
+			// counting the thingys
+			counting.innerHTML=`<br>
+			Nothing found: ${nothingFound} <br>
+			Pokeballs found: ${pokeballsFound} <br>
+			Bulbasaur found: ${bulbasaurCaught} <br>
+			Charmander found: ${charmanderCaught} <br>
+			Eevee found: ${eeveeCaught} <br>
+			Pikachu found: ${pikachuCaught} <br>
+			Squirtle found: ${squirtleCaught} <br>`;
+
+			// showing the thingy
+			counting.style.display='block';
+
+			//make other graass unclickable
+			grass2.style.pointerEvents='none';
+			grass3.style.pointerEvents='none';
+
+			//make the play again button visible
+			play_again_button.style.display=`block`;
+			pokedex.style.display='block';
+
+		}
+
+		grass2.onclick=function(){
+			// cjeck to see if the play again button is currently visible
+			//if so, don't let this grass compute a new graphic and update the state 
+			pokeballsRemaining-=1;
+
+			if (chance==undefined){
+				chance=parseInt(Math.random()*3);
+			}
+
+			if (chance==0){
+				grass2.src=``;
+				status.innerHTML=`Nothing here!`;
+				nothingFound++;
+			}
+			else if(chance==1){
+				// choose a random pokemon picture
+				let pokemonNum=parseInt(Math.random()*5);
+				grass2.src= `images/${pokemon[pokemonNum]}.png`;
+				pokemonsCaught+=1;
+
+				if(pokemonNum==0){
+					bulbasaurCaught++;
+					pokedex.firstElementChild.firstElementChild.children[2].children[1].innerHTML=bulbasaurCaught;
+					histogram2.style.width=parseInt(histogram2.style.width)+10+'px';
+				}
+				else if(pokemonNum==1){
+					charmanderCaught++;
+					pokedex.firstElementChild.firstElementChild.children[3].children[1].innerHTML=charmanderCaught;
+					histogram3.style.width=parseInt(histogram3.style.width)+10+'px';
+				}
+				else if(pokemonNum==2){
+					eeveeCaught++;
+					pokedex.firstElementChild.firstElementChild.children[4].children[1].innerHTML=eeveeCaught;
+					histogram4.style.width=parseInt(histogram4.style.width)+10+'px';
+				}
+				else if(pokemonNum==3){
+					pikachuCaught++;
+					pokedex.firstElementChild.firstElementChild.children[1].children[1].innerHTML=pikachuCaught;
+					histogram1.style.width=parseInt(histogram1.style.width)+10+'px';
+				}
+				else if(pokemonNum==4){
+					squirtleCaught++;
+					pokedex.firstElementChild.firstElementChild.children[5].children[1].innerHTML=squirtleCaught;
+					histogram5.style.width=parseInt(histogram5.style.width)+10+'px';
+				}
+
+				if(bulbasaurCaught>=1 && charmanderCaught>=1 && eeveeCaught>=1 && pikachuCaught>=1 && squirtleCaught>=1){
+					status.innerHTML='Congrats! You caught each pokemon at least once!';
+				}
+				else{
+					status.innerHTML=`You caught a ${pokemon[pokemonNum]}`;
+				}
+			}
+			else{
+				grass2.src="images/pokeballs.png";
+				pokeballsRemaining+=2;
+				status.innerHTML=`You found two Pokeballs!`;
+				pokeballsFound++;
+			}
+			//round is over. update the pokeballs left indicator
+			pokeballs_left_div.innerHTML=`Pokeballs: ` + pokeballsRemaining;
+			pokemon_caught_div.innerHTML=`Caught: ` + pokemonsCaught;
+
+			// counting the thingys
+			counting.innerHTML=`<br>
+			Nothing found: ${nothingFound} <br>
+			Pokeballs found: ${pokeballsFound} <br>
+			Bulbasaur found: ${bulbasaurCaught} <br>
+			Charmander found: ${charmanderCaught} <br>
+			Eevee found: ${eeveeCaught} <br>
+			Pikachu found: ${pikachuCaught} <br>
+			Squirtle found: ${squirtleCaught} <br>`;
+
+			// showing the thingy
+			counting.style.display='block';
+
+			//make other graass unclickable
+			grass1.style.pointerEvents='none';
+			grass3.style.pointerEvents='none';
+
+			//make the play again button visible
+			play_again_button.style.display=`block`;
+			pokedex.style.display='block';
+		}
+
+		grass3.onclick=function(){
+			// cjeck to see if the play again button is currently visible
+			//if so, don't let this grass compute a new graphic and update the state 
+			pokeballsRemaining-=1;
+
+			if (chance==undefined){
+				chance=parseInt(Math.random()*3);
+			}
+
+			if (chance==0){
+				let pokemonNum=parseInt(Math.random()*5);
+				grass3.src= `images/${pokemon[pokemonNum]}.png`;
+				pokemonsCaught+=1;
+
+				if(pokemonNum==0){
+					bulbasaurCaught++;
+					pokedex.firstElementChild.firstElementChild.children[2].children[1].innerHTML=bulbasaurCaught;
+					histogram2.style.width=parseInt(histogram2.style.width)+10+'px';
+				}
+				else if(pokemonNum==1){
+					charmanderCaught++;
+					pokedex.firstElementChild.firstElementChild.children[3].children[1].innerHTML=charmanderCaught;
+					histogram3.style.width=parseInt(histogram3.style.width)+10+'px';
+				}
+				else if(pokemonNum==2){
+					eeveeCaught++;
+					pokedex.firstElementChild.firstElementChild.children[4].children[1].innerHTML=eeveeCaught;
+					histogram4.style.width=parseInt(histogram4.style.width)+10+'px';
+				}
+				else if(pokemonNum==3){
+					pikachuCaught++;
+					pokedex.firstElementChild.firstElementChild.children[1].children[1].innerHTML=pikachuCaught;
+					histogram1.style.width=parseInt(histogram1.style.width)+10+'px';
+				}
+				else if(pokemonNum==4){
+					squirtleCaught++;
+					pokedex.firstElementChild.firstElementChild.children[5].children[1].innerHTML=squirtleCaught;
+					histogram5.style.width=parseInt(histogram5.style.width)+10+'px';
+				}
+
+				if(bulbasaurCaught>=1 && charmanderCaught>=1 && eeveeCaught>=1 && pikachuCaught>=1 && squirtleCaught>=1){
+					status.innerHTML='Congrats! You caught each pokemon at least once!';
+				}
+				else{
+					status.innerHTML=`You caught a ${pokemon[pokemonNum]}`;
+				}
+			}
+			else if(chance==1){
+				grass3.src="images/pokeballs.png";
+				pokeballsRemaining+=2;
+				status.innerHTML=`You found two Pokeballs!`;
+				pokeballsFound++;
+			}
+			else{
+				grass3.src=``;
+				status.innerHTML=`Nothing here!`;
+				nothingFound++;
+			}
+			//round is over. update the pokeballs left indicator
+			pokeballs_left_div.innerHTML=`Pokeballs: ` + pokeballsRemaining;
+			pokemon_caught_div.innerHTML=`Caught: ` + pokemonsCaught;
+
+			// counting the thingys
+			counting.innerHTML=`<br>
+			Nothing found: ${nothingFound} <br>
+			Pokeballs found: ${pokeballsFound} <br>
+			Bulbasaur found: ${bulbasaurCaught} <br>
+			Charmander found: ${charmanderCaught} <br>
+			Eevee found: ${eeveeCaught} <br>
+			Pikachu found: ${pikachuCaught} <br>
+			Squirtle found: ${squirtleCaught} <br>`;
+
+			// showing the thingy
+			counting.style.display='block';
+
+			//make other grass unclickable
+			grass2.style.pointerEvents='none';
+			grass1.style.pointerEvents='none';
+
+			//make the play again button visible
+			play_again_button.style.display=`block`;
+			pokedex.style.display='block';
+		}
+
+		// when the user clicks on the play again button
+		play_again_button.onclick=function(){
+			//make all the grass transition back to their original graphic
+			grass1.src='images/grass.png';
+			grass2.src='images/grass.png';
+			grass3.src='images/grass.png';
+
+			//change the pointer thingys to be back to normal
+			grass1.style.pointerEvents='auto';
+			grass2.style.pointerEvents='auto';
+			grass3.style.pointerEvents='auto';
+
+			// reset chance
+			chance=undefined;
+
+			//hide the play agian button
+			play_again_button.style.display='none';
+			status.innerHTML=`Click a grass`;
+
+			//check to see if you have pokeballs
+			if (pokeballsRemaining<=0){
+				grass1.style.pointerEvents='none';
+				grass2.style.pointerEvents='none';
+				grass3.style.pointerEvents='none';
+				play_again_button.style.display=`none`;
+				status.innerHTML="Game over!";
+			}
+
+			counting.style.display='none';
+			pokedex.style.display='none';
+		}
+
+		// when the user clicks on the play again button
+		reset_button.onclick=function(){
+
+			//make all the count back to 0
+			bulbasaurCaught=0;
+			nothingFound=0;
+			pokeballsFound=0;
+			pikachuCaught=0;
+			charmanderCaught=0;
+			eeveeCaught=0;
+			squirtleCaught=0;
+
+			//make histogram back to clear
+			histogram1.style.width='0px';
+			histogram2.style.width='0px';
+			histogram3.style.width='0px';
+			histogram4.style.width='0px';
+			histogram5.style.width='0px';
+
+			//make count on pokedex back to reset
+			pokedex.firstElementChild.firstElementChild.children[1].children[1].innerHTML='0';
+			pokedex.firstElementChild.firstElementChild.children[2].children[1].innerHTML='0';
+			pokedex.firstElementChild.firstElementChild.children[3].children[1].innerHTML='0';
+			pokedex.firstElementChild.firstElementChild.children[4].children[1].innerHTML='0';
+			pokedex.firstElementChild.firstElementChild.children[5].children[1].innerHTML='0';
+
+			//make all the grass transition back to their original graphic
+			grass1.src='images/grass.png';
+			grass2.src='images/grass.png';
+			grass3.src='images/grass.png';
+
+			//change the pointer thingys to be back to normal
+			grass1.style.pointerEvents='auto';
+			grass2.style.pointerEvents='auto';
+			grass3.style.pointerEvents='auto';
+
+			// reset chance
+			chance=undefined;
+			pokeballsRemaining=5;
+			pokemonsCaught=0;
+
+			//hide the play agian button
+			play_again_button.style.display='none';
+			status.innerHTML=`Click a grass`;
+			counting.style.display='none';
+			pokedex.style.display='none';
+
+			//update the pokeballs left indicator
+			pokeballs_left_div.innerHTML=`Pokeballs: ` + pokeballsRemaining;
+			pokemon_caught_div.innerHTML=`Caught: ` + pokemonsCaught;
+		}
+
+	</script>
+</body>
+</html>

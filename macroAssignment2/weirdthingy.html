@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Assignment 02</title>
+        <style>
+
+            #container {
+                width: 800px;
+                height: 600px;
+                margin: auto;
+                border: 5px solid black;
+                position: relative;
+            }
+            #background {
+                width: 100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                z-index: 0;
+            }
+
+            #title {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                z-index: 1;
+            }
+            #infopanel {
+                position: absolute;
+                top: 100px;
+                left: 20px;
+                z-index: 1;
+            }
+            #body {
+                position: absolute;
+                bottom: 0px;
+                right: 200px;
+                z-index: 1;
+            }
+            #head {
+                position: absolute;
+                bottom: 300px;
+                right: 250px;
+                z-index: 1;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div id="container">
+            <script>
+                const words = ['Awesome', 'Fantastic', 'Fabulous', 'Superb', 'Perfect', 'Brilliant', 'Coming up Roses'];
+
+                // pick a word at random
+                let i = parseInt( Math.random() * words.length );
+                let word = words[i];
+
+                // write out the H1 tag to use that word
+                document.write(`<h1 id="title">Everything is ${word}!</h1>`);
+
+
+                
+                let rightNow = new Date();
+                let hour = rightNow.getHours();
+                let minute = rightNow.getMinutes();
+
+                document.write(`<div id="infopanel">The current time is ${hour}:${minute} - welcome!</div>`);
+            </script>
+
+
+            <img id="head" src="heads/head1.png">
+            <img id="body" src="bodies/body1.png">
+            <img id="background" src="backgrounds/afternoon.png">
+        </div>        
+
+    </body>
+</html>

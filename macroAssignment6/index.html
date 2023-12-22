@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Memory Matching Madness</title>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+                text-align: center;
+            }
+            .hidden {
+                display: none;
+            }
+            #tile_container {
+                width: 400px;
+                margin: auto;
+            }
+            #tile_container img {
+                width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Memory Matching Madness</h1>
+
+        <div id="panel_gamestart">
+            <p>Let's play! Click to begin!</p>
+            <select name="game_mode" id="game_mode">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button id="button_playgame">Play Game</button>
+        </div>
+        <div id="panel_gameplaying" class="hidden">
+            <div id="timer_container">Your time: 0</div>
+            <div id="tile_container"></div>
+        </div>
+        <div id="panel_gameover" class="hidden">
+            <p>Game over!</p>
+            <p id="results">Your time: 0 sec</p>
+            <p id="betterOrNot">Best time: 0 sec</p>
+            <p id="nameP" class="hidden">
+                Name: <input name="name" id="name" type="text" maxlength="10">
+                <button id="submit">Submit</button>
+                <br>
+                <br>
+            </p>
+            <button id="playAgain">Play Again!</button>
+        </div>
+
+        <script>
+            // DOM queries
+            const panel_gamestart = document.querySelector('#panel_gamestart');
+            const button_playgame = document.querySelector('#button_playgame');
+            const panel_gameplaying = document.querySelector('#panel_gameplaying');
+            const timer_container = document.querySelector('#timer_container');
+            const tile_container = document.querySelector('#tile_container');
+            const panel_gameover = document.querySelector('#panel_gameover');
+            let timer=0;
+            let rightCount=0;
+            let pressed=false;
+            let what;
+            if(!localStorage.getItem('timeEasy')){
+                localStorage.setItem('timeEasy', 101023);
+            }
+            if(!localStorage.getItem('timeMedium')){
+                localStorage.setItem('timeMedium', 101023);
+            }
+            if(!localStorage.getItem('timeHard')){
+                localStorage.setItem('timeHard', 101023);
+            }
+            if(!localStorage.getItem('gameMode')){
+                localStorage.setItem('gameMode', 'easy');
+            }
+            if(!localStorage.getItem('tileContainerWidth')){
+                localStorage.setItem('tileContainerWidth', 400);
+            }
+            if(!localStorage.getItem('tileSize')){
+                localStorage.setItem('tileSize', 12);
+            }
+            const results=document.querySelector('#results');
+            const betterOrNot=document.querySelector('#betterOrNot');
+            const playAgain=document.querySelector('#playAgain');
+            const game_mode=document.querySelector('#game_mode');
+            const nameP=document.querySelector('#nameP');
+            const submit=document.querySelector('#submit');
+            const name=document.querySelector('#name');
+            const right=new Audio('images/correct.wav');
+            const wrong=new Audio('images/wrong.wav');
+
+            // global variables to keep track of our picked tiles
+            let tile1 = false;
+            let tile2 = false;
+
+            game_mode.onchange=function(event) {
+                if (game_mode.value=="easy"){
+                    localStorage.setItem('gameMode', game_mode.value);
+                    localStorage.setItem('tileContainerWidth', 400);
+                    tile_container.style.width=`${localStorage.getItem('tileContainerWidth')}px`;
+                    localStorage.setItem('tileSize',12);
+                }
+                else if (game_mode.value=="medium"){
+                    localStorage.setItem('gameMode', game_mode.value);
+                    localStorage.setItem('tileContainerWidth', 500);
+                    tile_container.style.width=`${localStorage.getItem('tileContainerWidth')}px`;
+                    localStorage.setItem('tileSize',20);
+                }
+                else{
+                    localStorage.setItem('gameMode', game_mode.value);
+                    localStorage.setItem('tileContainerWidth', 600);
+                    tile_container.style.width=`${localStorage.getItem('tileContainerWidth')}px`;
+                    localStorage.setItem('tileSize',30);
+                }
+            }
+
+            game_mode.value=localStorage.getItem('gameMode');
+            tile_container.style.width=`${localStorage.getItem('tileContainerWidth')}px`;
+
+            button_playgame.onclick = function(e) {
+                timer_container.innerHTML=`Your time: ${timer}`;
+                panel_gamestart.classList.add('hidden');
+                panel_gameplaying.classList.remove('hidden');
+
+                let assets = ['snorlax.png', 'electrabuzz.png', 'chansey.png', 'oddish.png',
+                            'pikachu.png', 'paras.png', 'arcanine.png', 'ponita.png',
+                            'venonat.png', 'eggsecute.png', 'machop.png', 'pidgey.png',
+                            'psyduck.png', 'tauros.png', 'vulpix.png', 'gloom.png',
+                            'krabby.png', 'butterfree.png', 'bulbasaur.png', 'clefairy.png',
+                            'koffing.png', 'goldeen.png', 'magikarp.png', 'beedrill.png',
+                            'lapras.png', 'meowth.png', 'ekans.png', 'jigglypuff.png',
+                            'horsea.png', 'polywog.png', 'sandshrew.png', 'rattata.png',
+                            'gengar.png', 'eevee.png', 'bellsprout.png', 'squirtle.png',
+                            'seel.png', 'caterpie.png'];
+
+                // pick 6 graphics at random
+                let selectedTiles = [];
+
+                while (selectedTiles.length < localStorage.getItem('tileSize')) {
+                    // pick a random one from the assets array
+                    let i = parseInt( Math.random() * assets.length );
+                    selectedTiles.push( assets[i] );
+                    selectedTiles.push( assets[i] );
+                    assets.splice(i, 1);
+                }
+
+                // randomize these tiles so they are all messed up
+                for(let i=0; i<selectedTiles.length;i++){
+                	let rand=parseInt(Math.random()*localStorage.getItem('tileSize'));
+                	let rand2=parseInt(Math.random()*localStorage.getItem('tileSize'));
+                	let temp=selectedTiles[rand2];
+                	selectedTiles[rand2]=selectedTiles[rand];
+                	selectedTiles[rand]=temp;
+                }
+
+                // create tiles for these graphics
+                for (let i = 0; i < selectedTiles.length; i++) {
+                    // create a tile
+                    let tile = document.createElement('img');
+                    tile.src = 'images/pokeball.png';
+                    tile.dataset.secret = 'images/' + selectedTiles[i];
+                    tile_container.appendChild(tile);
+
+                    // set up event listeners on each tile
+                    tile.addEventListener('click', function(event) {
+
+                        // have no tiles been clicked?
+                        if (tile1 == false && tile2 == false) {
+                            // reveal tile 1
+
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile1 = event.currentTarget;
+                        }
+                        else if (tile2 == false && (tile1!=event.currentTarget)) {
+
+                            // reveal this tile
+
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile2 = event.currentTarget;
+
+                            // did they get it right?
+                            if (tile1.dataset.secret == tile2.dataset.secret) {
+                                // reset the game back to the original state and allow more clicks
+                                tile1.style.pointerEvents='none';
+                                tile2.style.pointerEvents='none';
+                                tile1 = false;
+                                tile2 = false;
+                                rightCount++;
+
+                                right.play();
+
+                            }
+                            else {
+                                // they got it wrong
+                                setTimeout( function() {
+                                    tile1.src = 'images/pokeball.png';
+                                    tile2.src = 'images/pokeball.png';
+                                    tile1 = false;
+                                    tile2 = false;
+
+                                    wrong.play();
+                                }, 1000);
+                            }
+                        }
+
+                        //tile.src = tile.dataset.secret;
+                	});
+
+                    
+                	tile.addEventListener('click', function(event){
+		            	// have time increase as time goes on
+			            if(rightCount<tile_container.children.length/2 && !pressed){
+			                what=setInterval(increaseTime,1000);
+                            pressed=true;
+			            }
+			            else if (rightCount>=tile_container.children.length/2) {
+			            	clearInterval(what);
+                            setTimeout( function() {
+                                    panel_gameplaying.classList.add('hidden');
+                                    panel_gameover.classList.remove('hidden');
+                                }, 1000);
+                            
+			            }
+                        else{
+                            console.log(' ');
+                        }
+
+			            function increaseTime(event){
+			            	timer++;
+			            	timer_container.innerHTML=`Your time: ${timer}`;
+			            }
+	            	});
+
+                    tile.addEventListener('click', function(event){
+                        if(rightCount>=tile_container.children.length/2){
+
+                            results.innerHTML=`Your time: ${timer}`;
+
+                            if(game_mode.value=="easy"){
+                                if(localStorage.getItem('timeEasy')>timer){
+                                    localStorage.setItem('timeEasy', timer);
+                                    betterOrNot.innerHTML=`Best time: ${timer} - New High Score!`;
+                                    nameP.classList.remove('hidden');
+                                    localStorage.setItem('nameEasy', 'anonymous');
+                                    submit.addEventListener('click',function(event){
+                                        event.preventDefault();
+                                        localStorage.setItem('nameEasy', name.value);
+                                    });
+                                }
+                                else{
+                                    betterOrNot.innerHTML=`Best time: ${localStorage.getItem('timeEasy')} by ${localStorage.getItem('nameEasy')}`;
+                                }
+                            }
+                            else if(game_mode.value=="medium"){
+                                if(localStorage.getItem('timeMedium')>timer){
+                                    localStorage.setItem('timeMedium', timer);
+                                    betterOrNot.innerHTML=`Best time: ${timer} - New High Score!`;
+                                    nameP.classList.remove('hidden');
+                                    localStorage.setItem('nameMedium', 'anonymous');
+                                    submit.addEventListener('click',function(event){
+                                        event.preventDefault();
+                                        localStorage.setItem('nameMedium', name.value);
+                                    });
+                                }
+                                else{
+                                    betterOrNot.innerHTML=`Best time: ${localStorage.getItem('timeMedium')} by ${localStorage.getItem('nameMedium')}`;
+                                }
+                            }
+                            else{
+                                if(localStorage.getItem('timeHard')>timer){
+                                    localStorage.setItem('timeHard', timer);
+                                    betterOrNot.innerHTML=`Best time: ${timer} - New High Score!`;
+                                    nameP.classList.remove('hidden');
+                                    localStorage.setItem('nameHard', 'anonymous');
+                                    submit.addEventListener('click',function(event){
+                                        event.preventDefault();
+                                        localStorage.setItem('nameHard', name.value);
+                                    });
+                                }
+                                else{
+                                    betterOrNot.innerHTML=`Best time: ${localStorage.getItem('timeHard')} by ${localStorage.getItem('nameHard')}`;
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            playAgain.addEventListener('click', function(event){
+                panel_gameover.classList.add('hidden');
+                panel_gamestart.classList.remove('hidden');
+                rightCount=0;
+                while(tile_container.firstChild){
+                    tile_container.removeChild(tile_container.firstChild);
+                }
+                pressed=false;
+                timer=0;
+                what=undefined;
+                nameP.classList.add('hidden');
+            });
+
+        </script>
+    </body>
+</html>
