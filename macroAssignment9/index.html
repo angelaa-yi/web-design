@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Let's Chat!</title>
+        <style>
+            #previous_messages{
+                width:100%;
+                height:300px;
+                resize:none;
+                overflow-y: scroll;
+            }
+
+            #nicknameError, #messageError, #passwordError, #bothErrors, #wrongError, #nicknameErrorCreate, #passwordErrorCreate, #bothErrorsCreate, #taken{
+                width:100%;
+                height:25px;
+                resize:none;
+                background-color: red;
+                color: white;
+            }
+
+            #success{
+                width:100%;
+                height:25px;
+                resize:none;
+                background-color: green;
+                color: white;
+            }
+
+            .hidden{
+                display: none;
+            }
+
+            #create:hover{
+                cursor:pointer;
+            }
+
+            #login:hover{
+                cursor: pointer;
+            }
+
+            #create, #login{
+                text-decoration: underline;
+                color:blue;
+            }
+
+        </style>
+        <script src="helpers.js"></script>
+    </head>
+    <body>
+        <h1>Let's Chat!</h1>
+
+        <div id="panel_nickname">
+            <h2>Login</h2>
+            <div id="nicknameError" class="hidden">Please input a username!<br></div>
+            <div id="passwordError" class="hidden">Please input a password!<br></div>
+            <div id="bothErrors" class="hidden">Please input a username and password!<br></div>
+            <div id="wrongError" class="hidden">Please enter a valid username and password!<br></div>
+            Username: <input type="text" id="nickname">
+            <br>
+            Password: <input type='password' id='password'>
+            <br>
+            <button id="button_savenickname">Login & Chat</button>
+            <br>
+            <br>
+            <p id="create">Create Account</a>
+        </div>
+
+        <div id="create_nickname" class='hidden'>
+            <h2>Create an account</h2>
+            <div id="nicknameErrorCreate" class="hidden">Please input a username!<br></div>
+            <div id="passwordErrorCreate" class="hidden">Please input a password!<br></div>
+            <div id="bothErrorsCreate" class="hidden">Please input a username and password!<br></div>
+            <div id="taken" class="hidden">This username is already taken!<br></div>
+            <div id="success" class="hidden">Account has been created!<br></div>  
+            Username: <input type="text" id="user">
+            <br>
+            Password: <input type='password' id='pw'>
+            <br>
+            <button id="button_saveinfo">Create Account</button>
+            <br>
+            <br>
+            <p id="login">Login</a>
+        </div>
+
+        <div id="panel_chat" class="hidden">
+            <div id="messageError" class="hidden">Please input a message!<br></div>
+            <textarea id="previous_messages" readonly></textarea>
+            <input type="text" id="message">
+            <button id="button_sendmessage">Send Message</button>
+        </div>
+
+        <script>
+
+            const login=document.querySelector('#login');
+            const create=document.querySelector('#create');
+            const panel_nickname=document.querySelector('#panel_nickname');
+            const create_nickname=document.querySelector('#create_nickname');
+            const nicknameErrorCreate=document.querySelector('#nicknameErrorCreate');
+            const passwordErrorCreate=document.querySelector('#passwordErrorCreate');
+            const bothErrorsCreate=document.querySelector('#bothErrorsCreate');
+            const nicknameError=document.querySelector('#nicknameError');
+            const passwordError=document.querySelector('#passwordError');
+            const bothErrors=document.querySelector('#bothErrors');
+
+            login.onclick=function(event){
+                create_nickname.classList.add('hidden');
+                panel_nickname.classList.remove('hidden');
+                document.querySelector('#user').value='';
+                document.querySelector('#pw').value='';
+                if(!document.querySelector('#success').classList.contains('hidden')){
+                    document.querySelector('#success').classList.add('hidden');
+                }
+                else if(!nicknameErrorCreate.classList.contains('hidden')){
+                    nicknameErrorCreate.classList.add('hidden');
+                }
+                else if (!passwordErrorCreate.classList.contains('hidden')){
+                    passwordErrorCreate.classList.add('hidden');
+                }
+                else if (!bothErrorsCreate.classList.contains('hidden')){
+                    bothErrorsCreate.classList.add('hidden');
+                }
+                else if (!document.querySelector('#taken').classList.contains('hidden')){
+                    document.querySelector('#taken').classList.add('hidden');
+                }
+            }
+
+            create.addEventListener('click', function(event){
+                create_nickname.classList.remove('hidden');
+                panel_nickname.classList.add('hidden');
+                document.querySelector('#nickname').value='';
+                document.querySelector('#password').value='';
+                if(!nicknameErrorCreate.classList.contains('hidden')){
+                    nicknameErrorCreate.classList.add('hidden');
+                }
+                else if (!passwordErrorCreate.classList.contains('hidden')){
+                    passwordErrorCreate.classList.add('hidden');
+                }
+                else if (!bothErrorsCreate.classList.contains('hidden')){
+                    bothErrorsCreate.classList.add('hidden');
+                }
+                
+            });
+
+            const previous_messages = document.querySelector('#previous_messages');
+            let scrolling=false;
+
+            previous_messages.onscroll=function(event){
+                scrolling=true;
+            }
+
+            function scrollToBottom() {
+                if(!scrolling){
+                    previous_messages.scrollTop = previous_messages.scrollHeight;
+                }
+            }
+            // FIX THISSSSSSSS!!! PLEASEEE
+
+            // global variables
+            let userNickname;
+            let userPassword;
+            let user;
+            let pw;
+            const button_saveinfo=document.querySelector('#button_saveinfo');
+
+            button_saveinfo.addEventListener('click', function(event){
+                user=document.querySelector('#user').value;
+                pw=document.querySelector('#pw').value;
+                if (user && pw){
+                    if (!nicknameErrorCreate.classList.contains('hidden')){
+                        nicknameErrorCreate.classList.add('hidden');
+                    }
+                    else if(!passwordErrorCreate.classList.contains('hidden')){
+                        passwordErrorCreate.classList.add('hidden');
+                    }
+                    else if (!bothErrorsCreate.classList.contains('hidden')){
+                        bothErrorsCreate.classList.add('hidden');
+                    }
+                    performFetch({
+                        url: 'api.php?command=create',
+                        method: 'post',
+                        data: {
+                            user1: user,
+                            pw1: pw
+                        },
+                        success: function(data){
+                            console.log(data);
+                            if (data=="NOPE"){
+                                document.querySelector('#taken').classList.remove('hidden');
+                                if(!document.querySelector('#success').classList.contains('hidden')){
+                                    document.querySelector('#success').classList.add('hidden');
+                                }
+                                else if(!nicknameErrorCreate.classList.contains('hidden')){
+                                    nicknameErrorCreate.classList.add('hidden');
+                                }
+                                else if (!passwordErrorCreate.classList.contains('hidden')){
+                                    passwordErrorCreate.classList.add('hidden');
+                                }
+                                else if (!bothErrorsCreate.classList.contains('hidden')){
+                                    bothErrorsCreate.classList.add('hidden');
+                                }
+                            }
+                            else if(data=="SUCCESS"){
+                                // hide the nickname panel
+                                document.querySelector('#success').classList.remove('hidden');
+                                if(!document.querySelector('#taken').classList.contains('hidden')){
+                                    document.querySelector('#taken').classList.add('hidden');
+                                }
+                                else if(!nicknameErrorCreate.classList.contains('hidden')){
+                                    nicknameErrorCreate.classList.add('hidden');
+                                }
+                                else if (!passwordErrorCreate.classList.contains('hidden')){
+                                    passwordErrorCreate.classList.add('hidden');
+                                }
+                                else if (!bothErrorsCreate.classList.contains('hidden')){
+                                    bothErrorsCreate.classList.add('hidden');
+                                }
+                            }
+                            user='';
+                            pw='';
+                        },
+                        error: function(error){
+                            console.log("ERROR");
+                        }
+                    })
+
+                    
+                }
+                else if (!user && pw){
+                    nicknameErrorCreate.classList.remove('hidden');
+                    if(!passwordErrorCreate.classList.contains('hidden')){
+                        passwordErrorCreate.classList.add('hidden');
+                    }
+                    else if (!bothErrorsCreate.classList.contains('hidden')){
+                        bothErrorsCreate.classList.add('hidden');
+                    }
+                    else if(!document.querySelector('#success').classList.contains('hidden')){
+                        document.querySelector('#success').classList.add('hidden');
+                    }
+                    else if(!document.querySelector('#taken').classList.contains('hidden')){
+                        document.querySelector('#taken').classList.add('hidden');
+                    }
+                }
+                else if(user&& !pw){
+                    passwordErrorCreate.classList.remove('hidden');
+                    if(!nicknameErrorCreate.classList.contains('hidden')){
+                        nicknameErrorCreate.classList.add('hidden');
+                    }
+                    else if (!bothErrorsCreate.classList.contains('hidden')){
+                        bothErrorsCreate.classList.add('hidden');
+                    }
+                    else if(!document.querySelector('#success').classList.contains('hidden')){
+                        document.querySelector('#success').classList.add('hidden');
+                    }
+                    else if(!document.querySelector('#taken').classList.contains('hidden')){
+                        document.querySelector('#taken').classList.add('hidden');
+                    }
+                }
+                else if(!user && !pw){
+                    bothErrorsCreate.classList.remove('hidden');
+                    if(!nicknameErrorCreate.classList.contains('hidden')){
+                        nicknameErrorCreate.classList.add('hidden');
+                    }
+                    else if (!passwordErrorCreate.classList.contains('hidden')){
+                        passwordErrorCreate.classList.add('hidden');
+                    }
+                    else if(!document.querySelector('#success').classList.contains('hidden')){
+                        document.querySelector('#success').classList.add('hidden');
+                    }
+                    else if(!document.querySelector('#taken').classList.contains('hidden')){
+                        document.querySelector('#taken').classList.add('hidden');
+                    }
+                }
+
+            });
+
+            // figure out when the user saves their nickname
+            document.querySelector('#button_savenickname').onclick=function(event){
+                userNickname=document.querySelector('#nickname').value;
+                userPassword=document.querySelector('#password').value;
+
+                if (userPassword && userNickname){
+
+                    performFetch({
+                        url: 'api.php?command=check',
+                        method: 'post',
+                        data: {
+                            username: userNickname,
+                            password: userPassword
+                        },
+                        success: function(data){
+                            console.log(data);
+                            if (data=="SUCCESS"){
+                                // hide the nickname panel
+                                document.querySelector('#panel_nickname').classList.add('hidden');
+
+                                // show the chat panel
+                                document.querySelector('#panel_chat').classList.remove('hidden');
+                            }
+                            else if (data=="NONE"){
+                                document.querySelector('#wrongError').classList.remove('hidden');
+                            }
+                            // userNickname='';
+                            userPassword='';
+                        },
+                        error: function(error){
+                            console.log("ERROR");
+                        }
+                    })
+
+                    
+                }
+                else if (!userNickname && userPassword){
+                    passwordError.classList.remove('hidden');
+                    if(!passwordError.classList.contains('hidden')){
+                        passwordError.classList.add('hidden');
+                    }
+                    else if (!bothErrors.classList.contains('hidden')){
+                        bothErrors.classList.add('hidden');
+                    }
+                }
+                else if(!userPassword&& userNickname){
+                    document.querySelector('#passwordError').classList.remove('hidden');
+                    if(!nicknameError.classList.contains('hidden')){
+                        nicknameError.classList.add('hidden');
+                    }
+                    else if (!bothErrors.classList.contains('hidden')){
+                        bothErrors.classList.add('hidden');
+                    }
+                }
+                else if(!userPassword&& !userNickname){
+                    document.querySelector('#bothErrors').classList.remove('hidden');
+                    if(!nicknameError.classList.contains('hidden')){
+                        nicknameError.classList.add('hidden');
+                    }
+                    else if (!passwordError.classList.contains('hidden')){
+                        passwordError.classList.add('hidden');
+                    }
+                }
+                
+            }
+
+            document.querySelector('#button_sendmessage').onclick=function(event){
+                scrolling=false;
+                let userMessage=document.querySelector('#message').value;
+                    if(userMessage){
+                        if(!document.querySelector('#messageError').classList.contains('hidden')){
+                            document.querySelector('#messageError').classList.add('hidden');
+                        }
+                        // contact the server with our message AND our nickname
+                        performFetch({
+                            url: 'api.php?command=save',
+                            method: 'post',
+                            data: {
+                                nickname: userNickname,
+                                message: document.querySelector('#message').value
+                            },
+                            success: function(data){
+                                console.log("SUCCESS");
+                                console.log(data);
+                                if (data!="MISSINGDATA"){
+                                    previous_messages.value += data + "\n";
+                                }
+                                document.querySelector('#message').value='';
+                            },
+                            error: function(error){
+                                console.log("ERROR");
+                            }
+                        })
+                    }
+                    else{
+                        document.querySelector('#messageError').classList.remove('hidden');
+                    }
+                }
+
+            function getAllMessages(){
+                performFetch({
+                    url: 'api.php',
+                    method: 'get',
+                    data: {
+                        command:'get_all_messages'
+
+                    },
+                    success: function(data){
+                        console.log(data);
+                         // take what the server gave us and turn it into a JS object
+                        data=JSON.parse(data);
+                        console.log(data);
+
+                        document.querySelector('#previous_messages').value='';
+
+                        for(let i=0; i<data.length; i++){
+                            document.querySelector('#previous_messages').value += data[i] + "\n";
+                        }
+
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                })
+            }
+
+            setInterval(
+                getAllMessages,
+                3000
+            );
+            setInterval(
+                scrollToBottom,
+                1
+            );
+        </script>
+
+    </body>
+
+</html>
